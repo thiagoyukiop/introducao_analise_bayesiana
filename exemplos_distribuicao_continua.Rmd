@@ -1,0 +1,554 @@
+# Modelos Probabilísticos Contínuos
+
+## Distribuição Uniforme - UD(c, d)
+
+Exemplo: A densidade de probabilidade para x = 3 em uma uniforme U(2,6):
+
+```{r}
+c <- 2
+d <- 6
+x <- 3
+dunif(x = x, min = c, max = d)
+```
+
+A probabilidade acumulada P(X ≤ 3.5):
+
+```{r}
+punif(q = 3.5, min = c, max = d)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.1:
+
+```{r}
+qunif(p = 0.1, min = c, max = d)
+```
+
+Uma amostra de 9 números aleatórios:
+
+```{r}
+runif(n = 9, min = c, max = d)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+# Parâmetros
+a <- 2
+b <- 6
+x0 <- 3.5
+h <- 1 / (b - a)
+
+# Gráfico base
+plot(
+  NA,
+  xlim = c(1.8, 6.2),
+  ylim = c(0, 0.4),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – Uniforme U(2,6)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(a, x0, b))
+axis(2)
+box()
+
+# Reta da densidade
+segments(a, h, b, h, lwd = 2)
+
+# Linha vertical no fim do suporte
+segments(b, 0, b, h, lwd = 2)
+
+# Área sombreada P(X ≤ 3.5)
+polygon(
+  x = c(a, x0, x0, a),
+  y = c(0, 0, h, h),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A probabilidade de um número ser escolhido aleatóriamente dentro do intervalo é o mesmo para todos, e para valores fora do intervalo a probabilidade é zero.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Beta - Beta(a, B)
+
+Exemplo: A densidade de probabilidade para x = 0.2 em uma Beta(a = 3, B = 10):
+
+```{r}
+a <- 3
+B <- 10
+x <- 0.2
+dbeta(x = x, shape1 = a, shape2 = B)
+```
+
+A probabilidade acumulada P(X ≤ 0.2):
+
+```{r}
+pbeta(q = 0.2, shape1 = a, shape2 = B)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.15:
+
+```{r}
+qbeta(p = 0.15, shape1 = a, shape2 = B)
+```
+
+Uma amostra de 9 números aleatórios:
+
+```{r}
+rbeta(n = 9, shape1 = a, shape2 = B)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 0.2
+
+# Sequência de x
+x <- seq(0, 1, length.out = 1000)
+y <- dbeta(x, a, B)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, 1),
+  ylim = c(0, max(y) * 1.1),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – Beta(3,10)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(0, x0, 1))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dbeta(x_fill, a, B)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+Devido ao Beta alto, maior que o Alpha, é possível notar como ela é uma distribuição assimétrica à esquerda, com maior concentração perto de 0 e cauda mais longa à direita. 
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Beta Generalizada - BetaG(a, B, c, d)
+
+Enquanto a distribuição beta tem um intervalo fixo de [0, 1] a distribuição beta generalizada possuí um intervalo arbitrário [c, d]. Ou seja, é a mesma distribuição, porém com um intervalo diferente de [0, 1].
+
+## Distribuição Exponencial - Exp(B)
+
+Exemplo: A densidade de probabilidade para x = 2 em uma Exp(B = 0.5):
+
+```{r}
+x <- 2
+B <- 0.5
+dexp(x, B)
+```
+
+A probabilidade acumulada P(X ≤ 3):
+
+```{r}
+pexp(3, B)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.35:
+
+```{r}
+qexp(0.35, B)
+```
+
+Uma amostra de 7 números aleatórios:
+
+```{r}
+rexp(7, B)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 3
+
+# Sequência de x
+x <- seq(0, 20, length.out = 1000)
+y <- dexp(x, B)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, 20),
+  ylim = c(0, max(y)),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade - Exp(B = 0.5)",
+  axes = FALSE
+)
+
+# Eixos
+# axis(1, at = seq(0, 20, 1))
+axis(1, at = c(0, 3, 10, 20))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dexp(x_fill, B)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+Diante da distribuição exponencial onde Beta é igual a 0.5, a densidade é maior em tempos curtos e diminuí conforme o tempo aumenta.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Gama - Gama(a, B)
+
+Exemplo: A densidade de probabilidade para x = 5 em uma Gama(a = 2, B = 1)
+
+```{r}
+x <- 5
+a <- 2
+B <- 1
+dgamma(x = x, shape = a, rate = B)
+```
+
+A probabilidade acumulada P(X ≤ 4):
+
+```{r}
+pgamma(q = 4, shape = a, rate = B)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.15:
+
+```{r}
+qgamma(p = 0.15, shape = a, rate = B)
+```
+
+Uma amostra de 8 números aleatórios:
+
+```{r}
+rgamma(n = 8, shape = a, rate = B)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 4
+
+# Sequência de x
+x <- seq(0, 10, length.out = 1000)
+y <- dgamma(x, a, B)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, max(x)),
+  ylim = c(0, max(y) * 1.1),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – Gama(a = 2, B = 1)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(0, x0, 10))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dgamma(x_fill, a, B)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A distribuição Gama onde a = 2 e B = 1, é notável que se trata de uma distribuição assimetrica à direita, com densidade iniciando em zero crescendo até o pico e descendo gradualmente.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Gama-Inversa - GInv(a, B)
+
+A distribuição Gama-Inversa modela o inverso de uma variável Gama.
+
+## Distribuição Normal - N(u, o)
+
+Exemplo: A densidade de probabilidade para x = 2 em uma N(u = 3, o = 1)
+
+```{r}
+x <- 2
+u <- 3
+o <- 1
+dnorm(x = x, mean = u, sd = o)
+```
+
+A probabilidade acumulada P(X ≤ 2):
+
+```{r}
+pnorm(q = 2, mean = u, sd = o)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.15:
+
+```{r}
+qnorm(p = 0.15, mean = u, sd = o)
+```
+
+Uma amostra de 9 números aleatórios:
+
+```{r}
+rnorm(n = 9, mean = u, sd = o)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 2
+
+# Sequência de x
+x <- seq(0, 7, length.out = 1000)
+y <- dnorm(x, u, o)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, max(x)),
+  ylim = c(0, max(y) * 1.1),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – N(3, 1)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(0, x0, 7))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dnorm(x_fill, u, o)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A distribuição normal de u = 3, e o = 1 mostra que se trata de uma distribuição simétrica, com pico localizado em sua média que é 3.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Lognormal - LN(u, o)
+
+Exemplo: A densidade de probabilidade para x = 10 em uma LN(u = 2, o = 0.5)
+
+```{r}
+x <- 10
+u <- 2
+o <- 0.5
+dlnorm(x = x, mean = u, sd = o)
+```
+
+A probabilidade acumulada P(X ≤ 10):
+
+```{r}
+plnorm(q = 10, mean = u, sd = o)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.15:
+
+```{r}
+qlnorm(p = 0.15, mean = u, sd = o)
+```
+
+Uma amostra de 9 números aleatórios:
+
+```{r}
+rlnorm(n = 9, mean = u, sd = o)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 4
+
+# Sequência de x
+x <- seq(0, 20, length.out = 1000)
+y <- dlnorm(x, u, o)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, max(x)),
+  ylim = c(0, max(y) * 1.1),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – LN(2, 0.5)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(0, x0, 7))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dlnorm(x_fill, u, o)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A distribuição Lognormal de u = 2, e o = 0.5 mostra que se trata de uma distribuição assimétrica a direita, assumindo apenas valores positivos e inicia com valores próximos a zero.
+
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição de Student - St(g, u, o)
+
+Exemplo: 
+
+```{r}
+x <- 10
+u <- 2
+o <- 0.5
+dlnorm(x = x, mean = u, sd = o)
+```
+
+A probabilidade acumulada P(X ≤ 10):
+
+```{r}
+plnorm(q = 10, mean = u, sd = o)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.15:
+
+```{r}
+qlnorm(p = 0.15, mean = u, sd = o)
+```
+
+Uma amostra de 9 números aleatórios:
+
+```{r}
+rlnorm(n = 9, mean = u, sd = o)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x0 <- 4
+
+# Sequência de x
+x <- seq(0, 20, length.out = 1000)
+y <- dlnorm(x, u, o)
+
+# Gráfico base
+plot(
+  x, y,
+  type = "l",
+  lwd = 2,
+  xlim = c(0, max(x)),
+  ylim = c(0, max(y) * 1.1),
+  xlab = "X",
+  ylab = "p(x)",
+  main = "Densidade de Probabilidade – LN(2, 0.5)",
+  axes = FALSE
+)
+
+# Eixos
+axis(1, at = c(0, x0, 7))
+axis(2)
+box()
+
+# Área sombreada P(X ≤ 0.2)
+x_fill <- seq(0, x0, length.out = 500)
+y_fill <- dlnorm(x_fill, u, o)
+
+polygon(
+  c(0, x_fill, x0),
+  c(0, y_fill, 0),
+  density = 20,
+  angle = 45,
+  border = "black"
+)
+
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A distribuição Lognormal de u = 2, e o = 0.5 mostra que se trata de uma distribuição assimétrica a direita, assumindo apenas valores positivos e inicia com valores próximos a zero.

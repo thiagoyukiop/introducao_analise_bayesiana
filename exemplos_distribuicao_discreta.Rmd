@@ -1,0 +1,247 @@
+# Modelos Probabilísticos Discretos
+
+## Distribuição Uniforme Discreta - UD(a, b)
+
+Exemplo:
+
+```{r}
+a <- 2
+b <- 7
+m <- 20
+sample(a:b, size = m, replace = TRUE)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x <- a:b
+p <- rep(1 / length(x), length(x))
+plot(
+    x = x, 
+    y = p,
+    type = "h",
+    lwd = 4,
+    ylim = c(0, max(p) * 1.2),
+    xlim = c(0, 10),
+    xlab = "x",
+    ylab = "P(X = x)",
+    main = "Massa de Probabilidade - Uniforme Discreta UD(2,7)"
+    )
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A probabilidade de um número ser escolhido aleatóriamente dentro do intervalo é o mesmo para todos, e para valores fora do intervalo a probabilidade é zero.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Binomial - Bin(n, 𝛉)
+
+Exemplo: Uma população de animais em que cada um tem igual probabilidade de ser amostrado. Se X é o número de fêmeas entre os n animais amostrados ao acaso e com reposição de uma população com tamanho N em que há M fêmeas, então têm-se uma distribuição binomial com parâmetros n e 𝛉 = M/N.
+
+```{r}
+n <- 7
+theta <- 0.3 # M/N
+```
+
+A densidade de probabilidade para x = 2 em uma binomial com n = 7 e probabilidade 𝛉 = M/N = 0.3:
+
+```{r}
+x <- 2
+dbinom(x = x, size = n, prob = theta)
+```
+
+Probabilidade acumulada P(X ≤ 2):
+
+```{r}
+pbinom(q = x, size = n, prob = theta)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.4:
+
+```{r}
+qbinom(p = 0.4, size = n, prob = theta)
+```
+
+Uma amostra de 12 números aleatórios:
+
+```{r}
+rbinom(n = 12, size = 7, prob = theta)
+```
+
+Gerando visualização de dados do exemplo:
+
+```{r}
+x <- 0:n
+p <- dbinom(x = x, size = n, prob = theta)
+plot(
+    x = x, 
+    y = p,
+    type = "h",
+    lwd = 3,
+    ylim = c(0, max(p) * 1.2),
+    xlab = "X",
+    ylab = "P(x)",
+    main = "Massa de Probabilidade - Distribuição Binomial Bin(n = 7,𝛉 = 0.3)"
+    )
+```
+
+### Interpretação apartir da visualização dos dados:
+
+Sabendo-se que a proporção de fêmeas é de 0,3 do total de 7 da população, o gráfico demonstra a chance de escolher x fêmeas ao selecionar 7 animais, com reposição.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Hipergeométrica - Hip(M, N, n)
+
+Exemplo: A densidade de probabilidade para a retirada de uma amostra de tamanho n = 10 em que há x = 2 casos com a característica de interesse, de uma população que tem M = 15 casos com a característica de interesse e N - M = 30 casos sem a característica de interesse:
+
+```{r}
+n <- 10
+x <- 2
+M <- 15
+N_M = 30
+dhyper(x = x, m = M, n = N_M, k = n)
+```
+
+A probabilidade acumulada P(X ≤ 3):
+
+```{r}
+phyper(q = 3, m = M, n = N_M, k = n)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.1:
+
+```{r}
+qhyper(p = 0.1, m = M, n = N_M, k = n)
+```
+
+Uma amostra de 12 números aleatórios:
+
+```{r}
+rhyper(nn = 12, m = M, n = N_M, k = n)
+```
+
+Gerando visualização de dados do exemplo:
+```{r}
+x <- 0:n
+p <- dhyper(x = x, m = M, n = N_M, k = n)
+plot(
+    x = x, 
+    y = p,
+    type = "h",
+    lwd = 3,
+    ylim = c(0, max(p) * 1.2),
+    xlab = "X",
+    ylab = "p(x)",
+    main = "Massa de Probabilidade - Distribuição Hipergeométrica - Hip(M, N, n)"
+    )
+```
+
+### Interpretação apartir da visualização dos dados:
+
+A visualização indica a probabilidade de obter exatamente x indivíduos com a característica desejada ao selecionar, sem reposição, uma amostra de tamanho 10 de população finita. É possível notar que a maior probabilidade está em valores intermediários, com pico em x = 3, e com queda nas extremidades.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição de Poisson - Poi(u)
+
+Exemplo: A densidade de probabilidade para x = 2 em uma distribuição de Poisson com média u = 1.8:
+```{r}
+x <- 2
+u <- 1.8
+dpois(x = x, lambda = u)
+```
+
+A probabilidade acumulada P(X ≤ 3):
+```{r}
+ppois(q = 3, lambda = u)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.1:
+```{r}
+qpois(p = 0.1, lambda = u)
+```
+
+Uma amostra de 8 números aleatórios:
+```{r}
+rpois(n = 8, lambda = u)
+```
+
+Gerando visualização de dados do exemplo:
+```{r}
+x <- 0:10
+p <- dpois(x = x, lambda = u)
+plot(
+    x = x, 
+    y = p,
+    type = "h",
+    lwd = 3,
+    ylim = c(0, max(p) * 1.2),
+    xlab = "X",
+    ylab = "p(x)",
+    main = "Massa de Probabilidade - Distribuição de Poisson Poi(u = 1.8)"
+    )
+```
+
+### Interpretação apartir da visualização dos dados:
+
+O gráfico indica que, para uma distribuição Poisson com média de 1.8, os valores x próximos da média apresentam uma probabilidade mais alta, e os valores mais distantes tornam-se progressivamente menos prováveis.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
+
+## Distribuição Binomial Negativa - BinN(a, 𝛉)
+Exemplo: A densidade de probabilidade x = 10 fracassos antes de a = 5 sucessos com a probabilidade de sucesso em cada ponto da amostra dada por 𝛉 = 0.3:
+```{r}
+x <- 10
+a <- 5
+theta <- 0.3
+dnbinom(x = x, size = a, prob = theta)
+```
+
+A probabilidade acumulada P(X ≤ 15):
+```{r}
+pnbinom(q = 15, size = a, prob = theta)
+```
+
+O quantil x100q que satisfaz P(X ≤ x100q) = 0.1:
+```{r}
+qnbinom(p = 0.1, size = a, prob = theta)
+```
+
+Uma amostra de 8 números aleatórios:
+```{r}
+rnbinom(n = 8, size = a, prob = theta)
+```
+
+Gerando visualização de dados do exemplo:
+```{r}
+x <- 0:40
+p <- dnbinom(x = x, size = a, prob = theta)
+plot(
+    x = x, 
+    y = p,
+    type = "h",
+    lwd = 3,
+    ylim = c(0, max(p) * 1.2),
+    xlab = "X",
+    ylab = "p(x)",
+    main = "Massa de Probabilidade-Distribuição binomial negativa BinN(a=5, 𝛉=0.3)"
+    )
+```
+
+### Interpretação apartir da visualização dos dados:
+
+O gráfico indica que as probabilidades muito baixas estão associadas a números muito baixos ou muito altos de fracassos. A distribuição atinge um pico em valores intermediários de fracassos, indicando que existe um número provável de fracassos antes de alcançar o quinto sucesso. A partir deste pico, as probabilidades diminuem de forma gradual, caracterizando assim uma distribuição assimétrica à direita.
+
+```{r, echo = FALSE, eval = FALSE}
+rm(list = ls())
+```
